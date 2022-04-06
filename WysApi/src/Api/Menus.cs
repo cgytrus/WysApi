@@ -24,7 +24,7 @@ public static class Menus {
         }
 
         public const string Main = $"{Prefix}MAIN";
-        public const string Difficulty = $"{Prefix}Difficuty";
+        public const string Difficulty = $"{Prefix}Difficulty";
         public const string Settings = $"{Prefix}Settings";
         public const string UnicornPower = $"{Prefix}UnicornPower";
         public const string Exit = $"{Prefix}Exit";
