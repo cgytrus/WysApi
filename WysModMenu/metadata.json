@@ -1,0 +1,17 @@
+{
+    "id": "com.github.cgytrus.wys.modmenu",
+    "name": "Mod Menu",
+    "version": "0.1.0",
+    "authors": [ "ConfiG" ],
+    "description": "Adds a mod menu and provides an API to set your menu as a configuration screen",
+    "dependencies": [
+        {
+            "id": "com.github.cgytrus.gmml.hooker",
+            "version": "0.1.0"
+        },
+        {
+            "id": "com.github.cgytrus.wys.api",
+            "version": "0.1.0"
+        }
+    ]
+}
