@@ -22,7 +22,7 @@ public class ExampleMod : IGameMakerMod {
 
     public void Load(int audioGroup, ModData currentMod) {
         if(audioGroup != 0) return;
-        Config config = GmmlConfig.Config.LoadPatcherConfig<Config>("wysExampleMod.json");
+        Config config = GmmlConfig.Config.LoadPatcherConfig<Config>(audioGroup, "wysExampleMod.json");
         UndertaleData data = Patcher.data;
 
         // change epilepsy screen title to "eat my nuts"
