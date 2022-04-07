@@ -57,7 +57,7 @@ if keyboard_check_pressed(vk_f2)
 
         // log "move like a snail" every time scr_move_like_a_snail is executed
         // (commented out cuz it spams the log... a lot)
-//        Hooker.HookScript("scr_move_like_a_snail",
+//        Hooker.HookFunction("scr_move_like_a_snail",
 //            @"#orig#(argument0, argument1, argument2, argument3)
 //show_debug_message(""move like a snail"")
 //");
@@ -66,10 +66,8 @@ if keyboard_check_pressed(vk_f2)
         data.Variables.EnsureDefined("wys_test3", UndertaleInstruction.InstanceType.Global, false, data.Strings, data);
         data.Variables.EnsureDefined("wys_test4", UndertaleInstruction.InstanceType.Global, false, data.Strings, data);
 
-        data.GlobalInitScripts.Add(new UndertaleGlobalInit {
-            Code = Hooker.CreateSimpleScript("scr_setup_menu_example",
-                "global.wys_test3 = false\nglobal.wys_test4 = 0.0", 0).Code
-        });
+        Hooker.CreateGlobalScript("scr_setup_menu_example", "global.wys_test3 = false\nglobal.wys_test4 = 0.0",
+            0, out _);
 
         UndertaleGameObject configMenu = Menus.CreateMenu("ExampleConfig",
             new Menus.WysMenuOption("\"Test Option 1\"") {

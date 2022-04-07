@@ -138,9 +138,9 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
     public static string CreateToggleMenu(UndertaleData data, string name, string setCode, string preselectCode,
         string? tooltipScript = null, string? tooltipArgument = null) {
         UndertaleScript setScript =
-            Hooker.CreateSimpleScript(data, $"{ScriptPrefix}set_{name}", setCode, 1);
+            Hooker.CreateLegacyScript(data, $"{ScriptPrefix}set_{name}", setCode, 1);
         UndertaleScript preselectScript =
-            Hooker.CreateSimpleScript(data, $"{ScriptPrefix}preselect_{name}", preselectCode, 0);
+            Hooker.CreateLegacyScript(data, $"{ScriptPrefix}preselect_{name}", preselectCode, 0);
 
         UndertaleGameObject menu = CreateMenu(data, $"toggle_{name}", new WysMenuSettings {
             executeScriptsOnSwitch = true,
@@ -184,8 +184,8 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
         CreateChangeMenu(Patcher.data, name, changeCode, returnCode, step, enableUiSounds);
     public static (string menuName, string returnName) CreateChangeMenu(UndertaleData data, string name,
         string changeCode, string returnCode, double step, bool enableUiSounds = true) {
-        UndertaleScript changeScript = Hooker.CreateSimpleScript(data, $"{ScriptPrefix}change_{name}", changeCode, 1);
-        UndertaleScript returnScript = Hooker.CreateSimpleScript(data, $"{ScriptPrefix}return_{name}", returnCode, 0);
+        UndertaleScript changeScript = Hooker.CreateLegacyScript(data, $"{ScriptPrefix}change_{name}", changeCode, 1);
+        UndertaleScript returnScript = Hooker.CreateLegacyScript(data, $"{ScriptPrefix}return_{name}", returnCode, 0);
 
         UndertaleGameObject menu = CreateMenu(data, $"change_{name}", new WysMenuSettings {
             allowLoopingUpDown = false,
