@@ -14,6 +14,7 @@ public class WysApiMod : IGameMakerMod {
         if(audioGroup != 0) return;
         UndertaleString gameVersion = GameInfo.GetMutableGameVersion();
         gameVersion.Content = $"Will You Snail v{gameVersion.Content}\nAPI v{currentMod.metadata.version}";
+        Console.WriteLine(gameVersion.Content);
     }
 #pragma warning restore CA1822
 }
