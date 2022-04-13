@@ -55,6 +55,9 @@ public static class Menus {
         string? executeScriptOnStart = null,
         bool enableUiSounds = true) {
         public string GetCode() =>
+            // ReSharper disable once CommentTypo
+            // sumbenu lol
+            // ReSharper disable once StringLiteralTypo
             $@"bExecuteScriptsOnSwitch = {executeScriptsOnSwitch.ToString().ToLowerInvariant()}
 bExecuteScriptsOnConfirm = {executeScriptsOnConfirm.ToString().ToLowerInvariant()}
 bExecuteScriptsOnExit = {executeScriptsOnExit.ToString().ToLowerInvariant()}
@@ -92,28 +95,19 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
 
     public static string GetMenuScriptName(string menu) => $"gml_Object_{menu}_Other_10";
 
-    public static void AddMenuOption(string menu, WysMenuOption option) => AddMenuOption(Patcher.data, menu, option);
-    public static void AddMenuOption(UndertaleData data, string menu, WysMenuOption option) =>
-        Hooker.HookCode(data, GetMenuScriptName(menu), $"#orig#()\n{option.GetAddCode()}");
+    public static void AddMenuOption(this UndertaleData data, string menu, WysMenuOption option) =>
+        data.HookCode(GetMenuScriptName(menu), $"#orig#()\n{option.GetAddCode()}");
 
-    public static void InsertMenuOption(string menu, int index, WysMenuOption option) =>
-        InsertMenuOption(Patcher.data, menu, index, option);
-    public static void InsertMenuOption(UndertaleData data, string menu, int index, WysMenuOption option) =>
-        Hooker.HookCode(data, GetMenuScriptName(menu), $"#orig#()\n{option.GetInsertCode(index)}");
+    public static void InsertMenuOption(this UndertaleData data, string menu, int index, WysMenuOption option) =>
+        data.HookCode(GetMenuScriptName(menu), $"#orig#()\n{option.GetInsertCode(index)}");
 
-    public static void InsertMenuOptionFromEnd(string menu, int index, WysMenuOption option) =>
-        InsertMenuOptionFromEnd(Patcher.data, menu, index, option);
-    public static void InsertMenuOptionFromEnd(UndertaleData data, string menu, int index, WysMenuOption option) =>
-        Hooker.HookCode(data, GetMenuScriptName(menu), $"#orig#()\n{option.GetInsertFromEndCode(index)}");
+    public static void InsertMenuOptionFromEnd(this UndertaleData data, string menu, int index, WysMenuOption option) =>
+        data.HookCode(GetMenuScriptName(menu), $"#orig#()\n{option.GetInsertFromEndCode(index)}");
 
-    public static UndertaleGameObject CreateMenu(string menu, params WysMenuOption[] options) =>
-        CreateMenu(Patcher.data, menu, options);
-    public static UndertaleGameObject CreateMenu(UndertaleData data, string name, params WysMenuOption[] options) =>
-        CreateMenu(data, name, new WysMenuSettings(), options);
+    public static UndertaleGameObject CreateMenu(this UndertaleData data, string name,
+        params WysMenuOption[] options) => CreateMenu(data, name, new WysMenuSettings(), options);
 
-    public static UndertaleGameObject CreateMenu(string menu, WysMenuSettings settings,
-        params WysMenuOption[] options) => CreateMenu(Patcher.data, menu, settings, options);
-    public static UndertaleGameObject CreateMenu(UndertaleData data, string name, WysMenuSettings settings,
+    public static UndertaleGameObject CreateMenu(this UndertaleData data, string name, WysMenuSettings settings,
         params WysMenuOption[] options) {
         UndertaleGameObject menu = new() {
             Name = data.Strings.MakeString($"{MenuPrefix}{name}"),
@@ -127,20 +121,17 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
         foreach(WysMenuOption option in options)
             codeBuilder.AppendLine(option.GetAddCode());
 
-        Hooker.ReplaceGmlSafe(menu.EventHandlerFor(EventType.Other, EventSubtypeOther.User0, data),
-            codeBuilder.ToString(), data);
+        menu.EventHandlerFor(EventType.Other, EventSubtypeOther.User0, data)
+            .ReplaceGmlSafe(codeBuilder.ToString(), data);
         return menu;
     }
 
-    public static string CreateToggleMenu(string menu, string name, string setCode, string preselectCode,
-        string? tooltipScript = null, string? tooltipArgument = null) =>
-        CreateToggleMenu(Patcher.data, name, setCode, preselectCode, tooltipScript, tooltipArgument);
-    public static string CreateToggleMenu(UndertaleData data, string name, string setCode, string preselectCode,
+    public static string CreateToggleMenu(this UndertaleData data, string name, string setCode, string preselectCode,
         string? tooltipScript = null, string? tooltipArgument = null) {
         UndertaleScript setScript =
-            Hooker.CreateLegacyScript(data, $"{ScriptPrefix}set_{name}", setCode, 1);
+            data.CreateLegacyScript($"{ScriptPrefix}set_{name}", setCode, 1);
         UndertaleScript preselectScript =
-            Hooker.CreateLegacyScript(data, $"{ScriptPrefix}preselect_{name}", preselectCode, 0);
+            data.CreateLegacyScript($"{ScriptPrefix}preselect_{name}", preselectCode, 0);
 
         UndertaleGameObject menu = CreateMenu(data, $"toggle_{name}", new WysMenuSettings {
             executeScriptsOnSwitch = true,
@@ -162,12 +153,7 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
         return menu.Name.Content;
     }
 
-    public static WysMenuOption CreateToggleOption(string name, string internalName,
-        string setCode, string preselectCode, string variable,
-        string? tooltipScript = null, string? tooltipArgument = null) =>
-        CreateToggleOption(Patcher.data, name, internalName, setCode, preselectCode, variable, tooltipScript,
-            tooltipArgument);
-    public static WysMenuOption CreateToggleOption(UndertaleData data, string name, string internalName,
+    public static WysMenuOption CreateToggleOption(this UndertaleData data, string name, string internalName,
         string setCode, string preselectCode, string variable,
         string? tooltipScript = null, string? tooltipArgument = null) {
         string menuName = CreateToggleMenu(data, internalName, setCode, preselectCode, tooltipScript, tooltipArgument);
@@ -179,13 +165,10 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
         };
     }
 
-    public static (string menuName, string returnName) CreateChangeMenu(string menu, string name,
-        string changeCode, string returnCode, double step, bool enableUiSounds = true) =>
-        CreateChangeMenu(Patcher.data, name, changeCode, returnCode, step, enableUiSounds);
-    public static (string menuName, string returnName) CreateChangeMenu(UndertaleData data, string name,
+    public static (string menuName, string returnName) CreateChangeMenu(this UndertaleData data, string name,
         string changeCode, string returnCode, double step, bool enableUiSounds = true) {
-        UndertaleScript changeScript = Hooker.CreateLegacyScript(data, $"{ScriptPrefix}change_{name}", changeCode, 1);
-        UndertaleScript returnScript = Hooker.CreateLegacyScript(data, $"{ScriptPrefix}return_{name}", returnCode, 0);
+        UndertaleScript changeScript = data.CreateLegacyScript( $"{ScriptPrefix}change_{name}", changeCode, 1);
+        UndertaleScript returnScript = data.CreateLegacyScript($"{ScriptPrefix}return_{name}", returnCode, 0);
 
         UndertaleGameObject menu = CreateMenu(data, $"change_{name}", new WysMenuSettings {
             allowLoopingUpDown = false,
@@ -204,10 +187,7 @@ bEnableUISounds = {enableUiSounds.ToString().ToLowerInvariant()}";
         return (menu.Name.Content, returnScript.Name.Content);
     }
 
-    public static WysMenuOption CreateChangeOption(string name, string internalName,
-        string changeCode, string returnCode, double step) =>
-        CreateChangeOption(Patcher.data, name, internalName, changeCode, returnCode, step);
-    public static WysMenuOption CreateChangeOption(UndertaleData data, string name, string internalName,
+    public static WysMenuOption CreateChangeOption(this UndertaleData data, string name, string internalName,
         string changeCode, string returnCode, double step) {
         (string menuName, string returnName) = CreateChangeMenu(data, internalName, changeCode, returnCode, step);
 
