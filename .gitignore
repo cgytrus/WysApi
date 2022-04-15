@@ -1,5 +1,6 @@
 .idea/
 **/libs/
+scripts/**/_set_game_dir.*
 
 
 ### C++ template
@@ -481,4 +482,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
