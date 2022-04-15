@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bat", "bat", "{CDED4B7C-24A
 		scripts\bat\clear_cache.bat = scripts\bat\clear_cache.bat
 		scripts\bat\mods.bat = scripts\bat\mods.bat
 		scripts\bat\mods_no_example.bat = scripts\bat\mods_no_example.bat
+		scripts\bat\libs.bat = scripts\bat\libs.bat
 	EndProjectSection
 EndProject
 Global

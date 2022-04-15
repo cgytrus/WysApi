@@ -6,5 +6,11 @@ Some useful GMML APIs for Will You Snail
 2. Install these as mods
 
 ## Building
-1. Create a `libs` folder in the solution root and create a symlink to the `gmml` folder from the game's folder inside it (or just copy it)
-2. Build
+1. Create `_set_game_dir.bat` in `scripts/bat` and paste the following contents into it,
+   replacing `<game dir>` with the path to the game:
+```
+set GAME_DIR=<game dir>
+```
+
+2. Run `libs.bat`
+3. Build
