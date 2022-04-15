@@ -1,39 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <None Update="metadata.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
+  <ItemGroup>
+    <None Update="metadata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="GmmlConfig, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\libs\gmml\mods\GmmlConfig\GmmlConfig.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-      <Reference Include="GmmlHooker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\libs\gmml\mods\GmmlHooker\GmmlHooker.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-      <Reference Include="GmmlPatcher, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\libs\gmml\patcher\GmmlPatcher.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-      <Reference Include="UndertaleModLib, Version=0.4.0.4, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\libs\gmml\patcher\UndertaleModLib.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-    </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GmmlConfig, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\libs\gmml\mods\GmmlConfig\GmmlConfig.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="GmmlHooker, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\libs\gmml\mods\GmmlHooker\GmmlHooker.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="GmmlPatcher, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\libs\gmml\patcher\GmmlPatcher.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UndertaleModLib, Version=0.4.0.4, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\libs\gmml\patcher\UndertaleModLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WysApi\WysApi.csproj" />
+    <ProjectReference Include="..\WysModMenu\WysModMenu.csproj" />
+  </ItemGroup>
+
+  <Target Name="HardlinkOutput" AfterTargets="Build">
     <ItemGroup>
-      <ProjectReference Include="..\WysApi\WysApi.csproj" />
-      <ProjectReference Include="..\WysModMenu\WysModMenu.csproj" />
+      <OutputFiles Include="$(OutputPath)**\*" />
     </ItemGroup>
+    <Copy SourceFiles="@(OutputFiles)"
+          DestinationFiles="bin\Current\%(RecursiveDir)%(Filename)%(Extension)"
+          SkipUnchangedFiles="true" UseHardlinksIfPossible="true" />
+  </Target>
 
 </Project>
