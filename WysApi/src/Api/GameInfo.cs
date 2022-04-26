@@ -13,10 +13,25 @@ public static class GameInfo {
         _cachedGameVersion ?? GetMutableGameVersion(data).Content;
 
     public static UndertaleString GetMutableGameVersion(this UndertaleData data) {
-        _cachedMutableGameVersion ??= ((UndertaleResourceById<UndertaleString?, UndertaleChunkSTRG>?)data.Code
+        UndertaleInstruction? versionInstruction = data.Code
             .ByName("gml_Object_obj_menu_manager_Draw_0").Instructions.FirstOrDefault(code =>
-                code.Kind == UndertaleInstruction.Opcode.Push && code.Type1 == UndertaleInstruction.DataType.String)?
-            .Value)?.Resource ?? data.Strings.MakeString("0.0");
+                code.Kind == UndertaleInstruction.Opcode.Push && code.Type1 == UndertaleInstruction.DataType.String);
+
+        // recreate the mutable string to make sure we don't mess up any other references of it
+        // (like the one used for saves)
+        if(_cachedMutableGameVersion is null) {
+            if(versionInstruction?.Value is
+                UndertaleResourceById<UndertaleString?, UndertaleChunkSTRG> { Resource: { } } resource) {
+                UndertaleString newString = new(resource.Resource.Content);
+                data.Strings.Add(newString);
+
+                resource = new UndertaleResourceById<UndertaleString?, UndertaleChunkSTRG>(newString);
+                versionInstruction.Value = resource;
+                _cachedMutableGameVersion = resource.Resource;
+            }
+            _cachedMutableGameVersion ??= data.Strings.MakeString("0.0");
+        }
+
         if(_cachedGameVersion is not null)
             return _cachedMutableGameVersion;
 
