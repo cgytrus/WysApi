@@ -25,7 +25,7 @@
       <HintPath>..\libs\gmml\patcher\GmmlPatcher.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UndertaleModLib, Version=0.4.0.4, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="UndertaleModLib, Version=0.5.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\libs\gmml\patcher\UndertaleModLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
